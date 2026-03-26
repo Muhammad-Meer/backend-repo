@@ -13,6 +13,12 @@ const userscheema = mongoose.Schema({
     
 
     name: {
-
-    }
+      type: String,
+      required: [true , "email is required for creating a user"],
+    },
+    
+    name: {
+      type: String,
+      required: [true , "email is required for creating a user"],
+    },
 })
