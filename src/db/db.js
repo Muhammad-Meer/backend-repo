@@ -8,6 +8,7 @@ async function connectDB() {
     })
     .catch((error) => {
       console.log(error+ "es ka error ha");
+      process.exit(1)
     });
 }
 
