@@ -16,9 +16,15 @@ const userscheema = mongoose.Schema({
       type: String,
       required: [true , "email is required for creating a user"],
     },
-    
+
     name: {
       type: String,
       required: [true , "email is required for creating a user"],
+      minlenght: [6, "password should contain more than 6 charector"],
+      select: false
     },
+}, {
+  timestamps: true
 })
+
+userscheema.pre("save", async function(next)) 
