@@ -7,7 +7,7 @@ async function connectDB() {
       console.log("connect hogya");
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error+ "es ka error ha");
     });
 }
 
