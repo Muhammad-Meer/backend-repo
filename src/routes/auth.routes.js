@@ -5,7 +5,7 @@ const router = express.Router()
 
 
 
-router.post('register', authcontroller.authcontroller )
+router.post('register', authcontroller.userregistercontroller )
 
 
 module.exports = router
