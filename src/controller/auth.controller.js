@@ -1,79 +1,85 @@
-const usermodel = require('../models/user.model')
-const jwt = require('jsonwebtoken')
+const usermodel = require("../models/user.model");
+const jwt = require("jsonwebtoken");
 
-
-
-async function userregistercontroller(req , res) {
-  const {email ,name , password } =  req.body;
+async function userregistercontroller(req, res) {
+  const { email, name, password } = req.body;
 
   const isExist = await usermodel.findOne({
-    email
-  })
+    email,
+  });
 
-  if(isExist) {
+  if (isExist) {
     return res.status(422).json({
       message: "user is already exist in with email",
-      status: "failed"
-    })
+      status: "failed",
+    });
   }
 
   const user = await usermodel.create({
-   email,
-   name,
-   password,
-  })
+    email,
+    name,
+    password,
+  });
 
-  const token = jwt.sign({userId: user._id}, process.env.SECRET, {expiresIn: "2d"})
+  const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+    expiresIn: "2d",
+  });
 
-  res.cookie("token", token,)
+  res.cookie("token", token);
   res.status(201).json({
     user: {
-    id: user._id,
-    name: user.name,
-    email: user.email
+      id: user._id,
+      name: user.name,
+      email: user.email,
     },
-    token: token
-  })
+    token: token,
+  });
 }
 
-async function userlogincontroller(req , res) {
-  const {email , password} = req.body;
+async function userlogincontroller(req, res) {
+  const { email, password } = req.body;
 
-  const user = await usermodel.findOne({
-    email
-  })
+  try {
+    const user = await usermodel.findOne({
+      email,
+    });
 
-  if(!user) {
-    return res.status(404).json({
-      message: "user not found with email",
-      status: "failed"
-    })
+    if (!user) {
+      return res.status(401).json({
+        message: "user not found with email",
+        status: "failed",
+      });
+    }
+
+    const isMatch = await user.comparepassword(password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "invalid password",
+        status: "failed",
+      });
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
+      expiresIn: "2d",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "internal server error",
+      status: error.message,
+    });
   }
 
-  const isMatch = await user.comparepassword(password)
+  res.cookie("token", token);
 
-  if(!isMatch) {
-    return res.status(422).json({
-      message: "invalid password",
-      status: "failed"
-    })
-  }
+  res.status(200).json({
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
+    token: token,
+  });
+}
 
-  const hashpassword = await user.hash(password, user.password)
-
-  const token = jwt.sign({userId: user._id}, process.env.SECRET, {expiresIn: "2d"})
-
-} 
-
-
-res.cookie("token", token)
-
-res.status(200).json({
-  user: {
-    id: user._id,
-    name: user.name,
-    email: user.email
-  },
-  token: token
-})
-module.exports = {userregistercontroller,userlogincontroller}
+module.exports = { userregistercontroller, userlogincontroller };
