@@ -64,10 +64,7 @@ async function userlogincontroller(req, res) {
       expiresIn: "2d",
     });
   } catch (error) {
-    res.status(500).json({
-      message: "internal server error",
-      status: error.message,
-    });
+    console.log(error);
   }
 
   res.cookie("token", token);
