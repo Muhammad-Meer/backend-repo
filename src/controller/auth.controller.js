@@ -36,4 +36,7 @@ async function userregistercontroller(req , res) {
   })
 }
 
-module.exports = {userregistercontroller}
+async function userlogincontroller(req , res) {
+  
+}
+module.exports = {userregistercontroller,userlogincontroller}
