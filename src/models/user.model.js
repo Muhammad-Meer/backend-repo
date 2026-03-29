@@ -35,8 +35,6 @@ userscheema.pre("save", async function (next) {
 
   const hashpassword = await bcrypt.hash(this.password, 10);
   this.password = hashpassword;
-
-  return next();
 });
 
 userscheema.methods.comparepassword = async function (password) {
