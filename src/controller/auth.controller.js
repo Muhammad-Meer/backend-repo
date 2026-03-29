@@ -23,7 +23,12 @@ async function userregistercontroller(req , res) {
    password,
   })
 
-  const token = jwt.sign()
+  const token = jwt.sign({userId: user._id}, process.env.SECRET, {expiresIn: "2d"})
+  res.status(201).json({
+    message: "user created successfully",
+    status: "success",
+    token: token
+  })
 }
 
 module.exports = {userregistercontroller}
