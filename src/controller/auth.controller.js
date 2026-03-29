@@ -23,7 +23,7 @@ async function userregistercontroller(req , res) {
    password,
   })
 
-  const token = 
+  const token = jwt.sign()
 }
 
 module.exports = {userregistercontroller}
