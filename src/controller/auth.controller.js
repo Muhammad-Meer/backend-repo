@@ -37,6 +37,38 @@ async function userregistercontroller(req , res) {
 }
 
 async function userlogincontroller(req , res) {
-  
-}
+  const {email , password} = req.body;
+
+  const user = await usermodel.findOne({
+    email
+  })
+
+  if(!user) {
+    return res.status(404).json({
+      message: "user not found with email",
+      status: "failed"
+    })
+  }
+
+  const isMatch = await user.comparepassword(password)
+
+  if(!isMatch) {
+    return res.status(422).json({
+      message: "invalid password",
+      status: "failed"
+    })
+  }
+} 
+
+const token = jwt.sign({userId: user._id}, process.env.SECRET, {expiresIn: "2d"})
+
+res.cookie("token", token)
+res.status(200).json({
+  user: {
+    id: user._id,
+    name: user.name,
+    email: user.email
+  },
+  token: token
+})
 module.exports = {userregistercontroller,userlogincontroller}
