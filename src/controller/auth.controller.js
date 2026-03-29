@@ -58,11 +58,16 @@ async function userlogincontroller(req , res) {
       status: "failed"
     })
   }
+
+  const hashpassword = await user.hash(password, user.password)
+
+  const token = jwt.sign({userId: user._id}, process.env.SECRET, {expiresIn: "2d"})
+
 } 
 
-const token = jwt.sign({userId: user._id}, process.env.SECRET, {expiresIn: "2d"})
 
 res.cookie("token", token)
+
 res.status(200).json({
   user: {
     id: user._id,
