@@ -29,6 +29,8 @@ async function userregistercontroller(req , res) {
     status: "success",
     token: token
   })
+
+  
 }
 
 module.exports = {userregistercontroller}
