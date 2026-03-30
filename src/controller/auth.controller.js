@@ -43,10 +43,13 @@ async function userregistercontroller(req, res) {
 async function userlogincontroller(req, res) {
   const { email, password } = req.body;
 
-  try {
+   try {
     const user = await usermodel.findOne({
       email,
     });
+     console.log("USER:", user);
+    console.log("PASSWORD FROM BODY:", password);
+    console.log("PASSWORD FROM DB:", user?.password);
 
     if (!user) {
       return res.status(401).json({
@@ -79,10 +82,11 @@ async function userlogincontroller(req, res) {
       token: token,
     });
   } catch (error) {
+    console.log(error)
     return res.status(500).json({
       message: "server error",
       status: "failed 3",
-      console.log(error)
+      error: error.message,
     });
   }
 }
