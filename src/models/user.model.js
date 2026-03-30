@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const userscheema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
@@ -13,34 +13,38 @@ const userscheema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: [true, "email is required for creating a user"],
+      required: [true, "Name is required for creating a user"],
     },
-
     password: {
       type: String,
-      required: [true, "email is required for creating a user"],
-      minlength: [6, "password should contain more than 6 charector"],
-      // select: false,
+      required: [true, "Password is required for creating a user"],
+      minlength: [6, "Password should contain at least 6 characters"],
+      select: false, // important, so password is not returned by default
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-userscheema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
+// Pre-save hook to hash password
+userSchema.pre("save", async function (next) {
+  console.log("Saving user, password before hash:", this.password);
 
-  const hashpassword = await bcrypt.hash(this.password, 10);
-  this.password = hashpassword;
+  if (!this.isModified("password")) return next();
+
+  this.password = await bcrypt.hash(this.password, 10);
+
+  console.log("Password after hash:", this.password);
+
+  next();
 });
 
-userscheema.methods.comparepassword = async function (password) {
-  return bcrypt.compare(password, this.password);
+// Method to compare password for login
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
-const usermmodel = mongoose.model("user", userscheema);
+const UserModel = mongoose.model("user", userSchema);
 
-module.exports = usermmodel;
+module.exports = UserModel;
