@@ -16,12 +16,11 @@ async function userregistercontroller(req, res) {
     });
   }
 
-  const hashpassword = await bcrypt.hash(password, 10);
 
   const user = await usermodel.create({
     email,
     name,
-    password: hashpassword,
+    password,
   });
 
   const token = jwt.sign({ userId: user._id }, process.env.SECRET, {
@@ -47,9 +46,7 @@ async function userlogincontroller(req, res) {
     const user = await usermodel.findOne({
       email,
     });
-     console.log("USER:", user);
-    console.log("PASSWORD FROM BODY:", password);
-    console.log("PASSWORD FROM DB:", user?.password);
+
 
     if (!user) {
       return res.status(401).json({
@@ -58,7 +55,7 @@ async function userlogincontroller(req, res) {
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password).select("+password");
+    const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
       return res.status(401).json({
