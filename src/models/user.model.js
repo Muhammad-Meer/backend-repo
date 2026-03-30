@@ -20,7 +20,7 @@ const userscheema = new mongoose.Schema(
       type: String,
       required: [true, "email is required for creating a user"],
       minlength: [6, "password should contain more than 6 charector"],
-      select: false,
+      // select: false,
     },
   },
   {
