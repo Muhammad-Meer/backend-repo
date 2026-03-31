@@ -37,7 +37,7 @@ userSchema.pre("save", async function (next) {
 
   console.log("Password after hash:", this.password);
 
-  next();
+  // next();
 });
 
 // Method to compare password for login
