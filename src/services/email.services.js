@@ -39,9 +39,18 @@ const sendEmail = async (to, subject, text, html) => {
   }
 };
 
-module.exports = sendEmail;
 
-module.exports = transporter;
+async function SendRegisterEmail(useremail, username) {
+  const subject = "Welcome to our platform!";
+
+
+  const text = `Hi ${username},\n\nThank you for registering on our platform. we're exited to have you on board!\n\nBest regards,\nThe Team`;
+
+  const html = `<p>Hi ${username},</p><p> thank you for registering</p>`
+  await sendEmail(useremail, subject, text, html);
+}
+
+module.exports = { SendRegisterEmail};
 
 
 
