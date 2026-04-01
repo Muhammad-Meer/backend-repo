@@ -16,7 +16,7 @@ status: {
 },
 
    currency: {
-    type: string,
+    type: String,
     required:  [true , "currency is required for creating an account"],
     default: "PKR"   }
 

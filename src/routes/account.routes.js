@@ -20,6 +20,8 @@ const router = express.Router()
 
 
 router.post("/", authmiddleware.authmiddleware, creaateaccountcontroller.creaateaccountcontroller)
+// router.post("/", authmiddleware, creaateaccountcontroller)
+
 
 
 
