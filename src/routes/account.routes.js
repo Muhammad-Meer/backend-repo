@@ -1,7 +1,5 @@
 const express = require('express')
 
-
-
 const authmiddleware = require('../middleware/auth.middleware')
 const creaateaccountcontroller = require('../controller/account.controller')
 
@@ -20,7 +18,6 @@ const router = express.Router()
 
 
 router.post("/", authmiddleware.authmiddleware, creaateaccountcontroller.creaateaccountcontroller)
-// router.post("/", authmiddleware, creaateaccountcontroller)
 
 
 
