@@ -1,5 +1,5 @@
 async function createTransaction(req, res) {
-  try {
+  
+  const { fromAccount, toAccount, amount, idempotencykey } = req.body;
 
-  }
 }
