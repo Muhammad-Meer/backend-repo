@@ -1,4 +1,6 @@
 const trancactionmodel = require('../models/transaction.model')
+const accountmodel = require('../models/account.model')
+
 
 
 
@@ -36,7 +38,7 @@ async function createTransaction(req, res) {
     if(isTransactionAlreadyExist.status === "COMPLETED") {
 
           return res.status(200).json({
-          message : "transaction with this idempotecy"
+          message: "Transaction already completed with this idempotency key"
     })
 
     }
@@ -55,10 +57,12 @@ async function createTransaction(req, res) {
      }
 
              if(isTransactionAlreadyExist.status === "REVERSED") {
-          return res.status(500).json({
-          message : "transaction was revered , please try again"
+          return res.status(400).json({
+          message : "transaction was reversed , please try again"
       })
     }
    
 } 
 }
+
+module.exports = {createTransaction}
