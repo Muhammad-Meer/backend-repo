@@ -63,6 +63,11 @@ async function createTransaction(req, res) {
     }
    
 } 
+
+if(fromAccountuser.status !== "ACTIVE" || toAccountuser.status !== "ACTIVE") {
+
+}
+
 }
 
 module.exports = {createTransaction}
